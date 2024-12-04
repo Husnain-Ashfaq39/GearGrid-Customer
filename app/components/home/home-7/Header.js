@@ -11,6 +11,8 @@ import useUserStore from "@/utils/store/userStore";
 
 const Header = () => {
   const user = useUserStore((state) => state.user);
+  console.log('user '+JSON.stringify(user));
+  
   const clearUser = useUserStore((state) => state.clearUser);
  
   const [logo, setLogo] = useState(null);
@@ -130,7 +132,7 @@ const Header = () => {
               <>
                 <li className="flex items-center space-x-2">
                   <span className="text-gray-700 text-xl">
-                    Hello, {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+                    Hello, {user?.name?.charAt(0).toUpperCase() + user?.name?.slice(1)}
                   </span>
 
                   <img src="/images/icon/logout.svg" alt="logout" className="h-6 w-6 cursor-pointer" onClick={handleLogout} />

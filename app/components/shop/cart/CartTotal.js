@@ -1,16 +1,28 @@
+"use client";
+import React from "react";
+import useCartStore from "@/utils/store/useCartStore";
+
 const CartTotal = () => {
+  const { cartItems } = useCartStore();
+
+  const subtotal = cartItems.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
+  const total = subtotal;
+
   return (
     <div className="order_sidebar_widget style2">
       <h4 className="title">Cart Totals</h4>
       <ul className="mb15">
         <li className="subtitle">
           <p>
-            Subtotal <span className="float-end">$13,000</span>
+            Subtotal <span className="float-end">${subtotal.toFixed(2)}</span>
           </p>
         </li>
         <li className="subtitle">
           <p>
-            Total <span className="float-end totals color-orose">$943,00</span>
+            Total <span className="float-end totals color-orose">${total.toFixed(2)}</span>
           </p>
         </li>
       </ul>

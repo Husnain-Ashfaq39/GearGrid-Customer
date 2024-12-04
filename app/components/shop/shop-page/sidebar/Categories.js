@@ -4,8 +4,6 @@
 import Image from "next/image"
 import { ChevronDown, ChevronRight } from "lucide-react"
 import { useState, useEffect } from "react"
-import db from "@/utils/appwrite/Services/dbServices"
-import storageServices from "@/utils/appwrite/Services/storageServices"
 import React from "react"
 
 export default function Categories({ onCategorySelect }) {
@@ -18,17 +16,17 @@ export default function Categories({ onCategorySelect }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await db.Categories.list()
-        const docs = response.documents
+        const response = await fetch(`http://localhost:5000/categories/all`)
+        const categoriesWithImages = await response.json()
+        console.log(categoriesWithImages);
 
-        const categoriesWithImages = await Promise.all(
-          docs.map(async (doc) => {
-            const imageUrl = doc.image ? await storageServices.images.getFileDownload(doc.image) : null
-            return { ...doc, imageUrl }
-          })
-        )
+        const categoriesWithImageUrls = categoriesWithImages.map(doc => ({
+          ...doc,
+          imageUrl: doc.image.length > 0 ? doc.image[0] : null
+        }))
+       // console.log(categoriesWithImageUrls)
 
-        setCategories(categoriesWithImages)
+        setCategories(categoriesWithImageUrls)
         setLoading(false)
       } catch (err) {
         console.error("Error fetching categories:", err)
@@ -55,35 +53,39 @@ export default function Categories({ onCategorySelect }) {
   }
 
   const getAllCategoryIds = (categoryId) => {
+    const visited = new Set();
     const collectCategoryIds = (id, ids) => {
-      ids.push(id)
-      getSubcategories(id).forEach(sub => collectCategoryIds(sub.$id, ids))
-    }
-    const categoryIds = []
-    collectCategoryIds(categoryId, categoryIds)
-    return categoryIds
-  }
+      if (visited.has(id)) return;
+      visited.add(id);
+      ids.push(id);
+      getSubcategories(id).forEach(sub => collectCategoryIds(sub._id, ids));
+    };
+    
+    const categoryIds = [];
+    collectCategoryIds(categoryId, categoryIds);
+    return categoryIds;
+  };
 
   const getSubcategories = (parentId) => {
-    return categories.filter((category) => category.parentCategoryId === parentId)
-  }
+    return categories.filter((category) => category.parentCategoryId === parentId);
+  };
 
   const getRootCategories = () => {
     return categories.filter((category) => !category.parentCategoryId)
   }
 
   const renderCategory = (category, level = 0) => {
-    const subcategories = getSubcategories(category.$id)
+    const subcategories = getSubcategories(category._id)
     const hasSubcategories = subcategories.length > 0
-    const isExpanded = expandedCategories.get(category.$id) || false
-    const isSelected = selectedCategory === category.$id
+    const isExpanded = expandedCategories.get(category._id) || false
+    const isSelected = selectedCategory === category._id
 
     const categoryClasses = `flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer group ${isSelected ? 'bg-gray-200' : ''}`
     const iconClasses = "text-gray-400 cursor-pointer"
 
     return (
-      <div key={category.$id} style={{ marginLeft: `${level * 1}rem` }}>
-        <div onClick={() => selectCategory(category.$id)} className={categoryClasses}>
+      <div key={category._id} style={{ marginLeft: `${level * 1}rem` }}>
+        <div onClick={() => selectCategory(category._id)} className={categoryClasses}>
           <div className="w-8 h-8 rounded-md overflow-hidden flex-shrink-0 bg-gray-100">
             {category.imageUrl ? (
               <Image
@@ -110,7 +112,7 @@ export default function Categories({ onCategorySelect }) {
             {hasSubcategories && (
               <div className={iconClasses} onClick={(e) => {
                 e.stopPropagation() 
-                toggleCategory(category.$id)
+                toggleCategory(category._id)
               }}>
                 {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
               </div>

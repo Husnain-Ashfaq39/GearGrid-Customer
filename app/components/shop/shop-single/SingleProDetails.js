@@ -1,6 +1,7 @@
+'use client';
 import Image from "next/image";
 
-const SingleProDetails = () => {
+const SingleProDetails = ({ product }) => {
   return (
     <>
       <div className="col-lg-6 mb-5">
@@ -19,7 +20,7 @@ const SingleProDetails = () => {
                         height: "100%",
                       }}
                       className="img-fluid"
-                      src="/images/shop/ss1.png"
+                      src={product && product.images && product.images[0] ? product.images[0] : "/images/shop/ss1.png"}
                       alt="ss1.png"
                     />
                   </div>

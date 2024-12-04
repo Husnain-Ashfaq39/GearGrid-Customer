@@ -2,8 +2,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { registerUser } from "@/utils/appwrite/Services/authServices";
-import db from "@/utils/appwrite/Services/dbServices"; // Ensure the correct path
+import axios from 'axios'; // Add axios for making API requests
 
 const SignupForm = () => {
   // Define the validation schema using Yup
@@ -23,27 +22,6 @@ const SignupForm = () => {
       .required("Confirm Password is required"),
   });
 
-  // Function to add user data to the Users collection
-  const addUserToCollection = async (userId, name, email) => {
-    try {
-      const userData = {
-        userId: userId,
-        role: "customer",
-        name: name,
-        email: email,
-        // telephone: "", // Telephone field is omitted as per your requirement
-      };
-
-      // Use the dynamic 'create' method for the Users collection
-      const response = await db.Users.create(userData,userId);
-
-      console.log("User added to Users collection:", response);
-    } catch (error) {
-      console.error("Error adding user to Users collection:", error);
-      throw new Error("Failed to save user data.");
-    }
-  };
-
   // Initialize Formik
   const formik = useFormik({
     initialValues: {
@@ -56,22 +34,34 @@ const SignupForm = () => {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         console.log("Form Data", values);
-        // Register the user and get the user object
-        const user = await registerUser(values.username, values.email, values.password);
+        // Register the user using the new API
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/auth/register`, {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+          confirmPassword: values.confirmPassword,
+        });
+        console.log(response.data);
+        // Handle successful registration
+        alert(response.data.message); // Show success message
 
-        // Assuming registerUser returns an object with the user's ID
-        const userId = user.$id; // Adjust based on your registerUser implementation
-
-        // Add user data to the Users collection
-        await addUserToCollection(userId, values.username, values.email);
-
-        // Optionally, you can redirect the user or show a success message here
-        // For example:
-        // router.push('/welcome');
-        alert("Registration successful!");
       } catch (error) {
         console.error("Registration error:", error);
-        setErrors({ submit: error.message || "Registration failed" });
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          console.error("Error data:", error.response.data);
+          console.error("Error status:", error.response.status);
+          console.error("Error headers:", error.response.headers);
+          setErrors({ submit: error.response.data.message || "Registration failed" });
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received:", error.request);
+          setErrors({ submit: "No response from server. Please try again." });
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error message:", error.message);
+          setErrors({ submit: "An unexpected error occurred. Please try again." });
+        }
       } finally {
         setSubmitting(false);
       }

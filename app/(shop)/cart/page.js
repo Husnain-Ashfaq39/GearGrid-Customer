@@ -9,7 +9,7 @@ import Coupon from "@/app/components/shop/cart/Coupon";
 import CartTotal from "@/app/components/shop/cart/CartTotal";
 
 export const metadata = {
-  title: "Cart || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Cart || Voiture - Automotive & Car Dealer  ",
 };
 
 const Cart = () => {

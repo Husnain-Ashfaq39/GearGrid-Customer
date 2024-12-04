@@ -24,6 +24,7 @@ const Hero = () => {
         // For each document, fetch the corresponding image URL
         const slidesWithImages = await Promise.all(
           documents.map(async (doc) => {
+            
             const { title, subtitle, imageId } = doc;
             // Fetch the image URL using storageServices
             const imageUrl = await storageServices.images.getFileView(imageId);

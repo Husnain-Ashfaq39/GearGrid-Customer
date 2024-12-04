@@ -5,11 +5,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import db from "@/utils/appwrite/Services/dbServices";
-import storageServices from "@/utils/appwrite/Services/storageServices";
-import { Query } from "appwrite";
+import useCartStore from '@/utils/store/useCartStore'; // Import the Zustand store
+
 
 const Products = ({ filter, categoryFilter, searchTerm, currentPage, itemsPerPage }) => {
+  const { addToCart } = useCartStore(); // Get addToCart function from Zustand store
   const [allProducts, setAllProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,50 +20,36 @@ const Products = ({ filter, categoryFilter, searchTerm, currentPage, itemsPerPag
       setLoading(true);
       setError(null);
       try {
-        const query = [
-          Query.select([
-            "$id",
-            "name",
-            "price",
-            "discountPrice",
-            "images",
-            "isOnSale",
-            "bannerLabel",
-            "categoryId",
-            "$createdAt",
-          ]),
-        ];
-
-        // Apply search filter if searchTerm is present
+        const queryParams = new URLSearchParams();
         if (searchTerm.trim() !== "") {
-          query.push(Query.search("name", `*${searchTerm}*`));
+          queryParams.append("search", searchTerm);
         }
-
-        // Apply category filter if present
         if (categoryFilter && categoryFilter.length > 0) {
-          query.push(Query.equal("categoryId", categoryFilter));
+          queryParams.append("categoryId", categoryFilter);
         }
 
-        const response = await db.Products.list(query);
-        const docs = response.documents;
+        const response = await fetch(`http://localhost:5000/api/products/all?${queryParams.toString()}`);
 
-        const productsData = await Promise.all(
-          docs.map(async (product) => ({
-            id: product.$id,
-            name: product.name,
-            price: product.price,
-            discountPrice: product.discountPrice,
-            imageSrc: product.images
-              ? await storageServices.images.getFileDownload(product.images[0])
-              : "/images/placeholder.png",
-            isOnSale: product.isOnSale,
-            bannerLabel: product.bannerLabel,
-            categoryId: product.categoryId,
-            createdAt: product.$createdAt,
-          }))
-        );
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
+        }
 
-        setAllProducts(productsData);
+        const productsData = await response.json();
+
+        const formattedProducts = productsData.map(product => ({
+          id: product._id,
+          name: product.name,
+          price: product.price,
+          discountPrice: product.discountPrice,
+          imageSrc: product.images.length > 0 ? product.images[0] : "/images/placeholder.png",
+          isOnSale: product.isOnSale,
+          bannerLabel: product.bannerLabel,
+          categoryId: product.categoryId,
+          createdAt: product.createdAt,
+        }));
+
+        setAllProducts(formattedProducts);
       } catch (err) {
         console.error("Error fetching products:", err);
         setError("Failed to load products");
@@ -144,14 +130,17 @@ const Products = ({ filter, categoryFilter, searchTerm, currentPage, itemsPerPag
                   <del className="ml-2 text-gray-500">${product.price}</del>
                 )}
               </div>
-              <Link href={`/shop-single/${product.id}`} className="cart_btn p-2 bg-gray-100 rounded-full hover:bg-gray-200">
+              <button 
+                onClick={() => addToCart(product)} // Add to cart functionality
+                className="cart_btn p-2 bg-gray-100 rounded-full hover:bg-gray-200"
+              >
                 <Image
                   width={12}
                   height={14}
                   src="/images/shop/cart-bag.svg"
                   alt="Add to cart"
                 />
-              </Link>
+              </button>
             </div>
             <div className="name mt-2">
               <Link href={`/shop-single/${product.id}`} className="text-gray-800 hover:text-blue-600">

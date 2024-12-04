@@ -1,4 +1,4 @@
-const ProductDescripitons = () => {
+const ProductDescripitons = ({ product}) => {
   return (
     <div className="product_single_content">
       <div className="mbp_pagination_comments">

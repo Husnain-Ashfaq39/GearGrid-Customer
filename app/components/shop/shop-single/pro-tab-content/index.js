@@ -1,8 +1,9 @@
+'use client';
 import CommentBox from "./CommentBox";
 import Comments from "./Comments";
 import ProductDescripitons from "./ProductDescripitons";
 
-const ProductContentTabs = () => {
+const ProductContentTabs = ({ product}) => {
   return (
     <div className="shop_single_tab_content mt40">
       <ul
@@ -50,7 +51,7 @@ const ProductContentTabs = () => {
         >
           <div className="row">
             <div className="col-lg-8 m-auto">
-              <ProductDescripitons />
+              <ProductDescripitons product={product} />
             </div>
           </div>
         </div>

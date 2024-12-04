@@ -74,7 +74,7 @@ export const checkAuth = async () => {
     return true;
   } catch (error) {
     return false;
-  }
+  } 
 };
 
 export const sendPasswordRecoveryEmail = async (email) => {

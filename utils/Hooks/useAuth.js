@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import useUserStore from '@/utils/store/userStore';
 import db from "@/utils/appwrite/Services/dbServices";
+import axios from 'axios';
 
 const useAuth = () => {
   const router = useRouter();
@@ -19,8 +20,12 @@ const useAuth = () => {
 
         if (!sessionId || !userId) throw new Error("No session found");
 
-        const userData = await db.Users.get(userId);
-        setUser(userData);
+        const userData = await axios.get(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/user/getUser/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${sessionId}`,
+          },
+        });
+        setUser(userData.data);
         setSession({ id: sessionId, userId });
       } catch (error) {
         console.error('Session verification failed:', error);

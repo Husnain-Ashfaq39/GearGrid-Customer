@@ -8,6 +8,9 @@ import { signIn } from "@/utils/appwrite/Services/authServices";
 import db from "@/utils/appwrite/Services/dbServices"; // Ensure correct path
 import useUserStore from "@/utils/store/userStore"; // Path to your Zustand store
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
+
+
 
 
 const LoginForm = ({ onClose }) => {
@@ -31,16 +34,30 @@ const LoginForm = ({ onClose }) => {
     onSubmit: async (values, { setSubmitting, setErrors }) => {
       try {
         // Attempt to sign in
-        const {  session,userId } = await signIn(values.email, values.password);
-        
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/auth/login`, {
+          email: values.email,
+          password: values.password,
+        })
 
-        // Fetch additional user data if needed
-        const userData = await db.Users.get(userId); // Adjust based on your dbServices implementation
+        console.log("user logined")
+        const session = response.data.session;
+        const userId = response.data.userId;
+        localStorage.setItem("authToken", session); // Store session in localStorage
+        localStorage.setItem("userId", userId); // Store userId in localStorage
+
+        const userData = await axios.get(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/user/getUser/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${session}`,
+          },
+        });
+
+        // Fetch additional user data using session in headers
+       
         console.log("Fetched user data:", userData);
 
         // Store user and session data in Zustand store
-        await setUser(userData);
-        await setSession({ id: session.$id, userId });
+        await setUser(userData.data);
+        await setSession({ id: session, userId });
 
      
         if (onClose) onClose(); // Close the modal
