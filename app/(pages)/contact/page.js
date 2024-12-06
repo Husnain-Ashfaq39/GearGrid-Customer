@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import Footer from "@/app/components/common/Footer";
 import DefaultHeader from "../../components/common/DefaultHeader";
 import HeaderSidebar from "../../components/common/HeaderSidebar";
@@ -25,9 +26,6 @@ const Contact = () => {
       </div>
       {/* Sidebar Panel End */}
 
-      {/* header top */}
-      <HeaderTop />
-      {/* End header top */}
 
       {/* Main Header Nav */}
       <DefaultHeader />
@@ -52,7 +50,7 @@ const Contact = () => {
       {/* <!-- End Our Contact --> */}
 
       {/* Our Contact */}
-      <section className="our-contact  bgc-f9">
+      <section className="our-contact  bgc-f9 p-12">
         <div className="container">
           <div className="row">
             <div className="col-md-4">
@@ -63,7 +61,7 @@ const Contact = () => {
             <div className="col-md-8">
               <div className="form_grid">
                 <div className="wrapper">
-                  <h3 className="title mb20">Contact Form</h3>
+                 
                   <Form />
                 </div>
               </div>
