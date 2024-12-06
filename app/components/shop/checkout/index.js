@@ -45,7 +45,7 @@ const BillingMain = () => {
     try {
       // Validate billing details
       await billingValidationSchema.validate(billingDetails, { abortEarly: false });
-      
+
       // Check if payment method is selected
       if (!paymentMethod) {
         console.error("Payment method is required");
@@ -62,50 +62,48 @@ const BillingMain = () => {
         transactionId: Math.floor(Math.random() * 1000000000),
         userId: userId
       };
-      if(paymentMethod=='cash')
-      {
+      if (paymentMethod == 'cash') {
         orderData.paymentStatus = 'unpaid'
         addOrder(orderData);
-        window.open(session.session.url, '_blank'); 
+       
         window.open('http://localhost:3000/complete-order');
       }
-      else
-      {
+      else {
 
-      
 
-      try {
-        // Call your backend to create a Stripe checkout session
-        console.log('ste 1');
-        const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/payment/create-checkout-session`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ totalPrice: Math.round(totalAmount)}),
-        });
-        console.log('ste 2');
 
-        if (response.ok) {
-          const session = await response.json();
-          orderData.stripeOrderId = session.session.id;
+        try {
+          // Call your backend to create a Stripe checkout session
+          console.log('ste 1');
+          const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/payment/create-checkout-session`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ totalPrice: Math.round(totalAmount) }),
+          });
+          console.log('ste 2');
 
-          addOrder(orderData);
-          window.open(session.session.url, '_blank'); 
-         
-        } else {
-          // Handle error if backend response is not ok
-          console.error('Failed to create Stripe session:', session.error);
+          if (response.ok) {
+            const session = await response.json();
+            orderData.stripeOrderId = session.session.id;
+
+            addOrder(orderData);
+            window.open(session.session.url, '_blank');
+
+          } else {
+            // Handle error if backend response is not ok
+            console.error('Failed to create Stripe session:', session.error);
+          }
+        } catch (error) {
+          console.error('Error during order processing:', error);
         }
-      } catch (error) {
-        console.error('Error during order processing:', error);
       }
-    }
     } catch (error) {
       // Handle validation errors
       const toast = document.createElement('div');
       toast.className = 'fixed top-5 right-5 bg-red-500 text-white p-4 rounded shadow-lg';
-      toast.innerText = `Please fill all required fields correctly`;
+      toast.innerText = error;
       document.body.appendChild(toast);
       setTimeout(() => {
         toast.remove();
