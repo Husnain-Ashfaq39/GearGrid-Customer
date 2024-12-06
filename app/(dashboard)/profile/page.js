@@ -1,5 +1,4 @@
 import DashboardHeader from "@/app/components/common/DashboardHeader";
-import DashboardHeaderTop from "@/app/components/common/DashboardHeaderTop";
 import DashboardSidebarMenu from "@/app/components/common/DashboardSidebarMenu";
 import DashboardSidebarMobileMenu from "@/app/components/common/DashboardSidebarMobileMenu";
 import HeaderSidebar from "@/app/components/common/HeaderSidebar";

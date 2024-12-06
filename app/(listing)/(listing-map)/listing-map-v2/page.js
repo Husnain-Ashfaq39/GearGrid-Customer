@@ -1,6 +1,5 @@
 import DefaultHeader from "@/app/components/common/DefaultHeader";
 import HeaderSidebar from "@/app/components/common/HeaderSidebar";
-import HeaderTop from "@/app/components/common/HeaderTop";
 import MobileMenu from "@/app/components/common/MobileMenu";
 import LoginSignupModal from "@/app/components/common/login-signup";
 import CarItems from "@/app/components/listing/listing-map/listing-map-v2/CarItems";
@@ -25,9 +24,6 @@ const ListingMapV2 = () => {
       </div>
       {/* Sidebar Panel End */}
 
-      {/* header top */}
-      <HeaderTop />
-      {/* End header top */}
 
       {/* Main Header Nav */}
       <DefaultHeader />
