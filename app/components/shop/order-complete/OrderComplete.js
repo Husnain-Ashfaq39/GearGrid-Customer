@@ -7,7 +7,7 @@ import axios from 'axios'; // Ensure axios is imported
 const OrderComplete = () => {
   const order = useOrderStore((state) => state.order); // Get the order from the store
   const cartItems = useCartStore((state) => state.cartItems); // Get cart items from the store
-  console.log('order '+JSON.stringify(order));
+  console.log('order ' + JSON.stringify(order));
   
   useEffect(() => {
     const storeOrderData = async () => {
@@ -19,9 +19,8 @@ const OrderComplete = () => {
               'Content-Type': 'application/json',
             },
           });
-          console.log("Response adding Order "+JSON.stringify(response));
+          console.log("Response adding Order " + JSON.stringify(response));
           
-
           if (response) {
             // New code to store order items
             await Promise.all(cartItems.map(async (item) => {
@@ -38,15 +37,17 @@ const OrderComplete = () => {
                 tags: item.tags || [], // Adjust according to your product structure
                 isOnSale: item.isOnSale || false // Adjust according to your product structure
               };
-              console.log('order item '+JSON.stringify(orderItem));
+              console.log('order item ' + JSON.stringify(orderItem));
               
-
               await axios.post(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/orderitems/add`, orderItem, {
                 headers: {
                   'Content-Type': 'application/json',
                 },
               });
             }));
+            // Clear both stores after successful order and order items storage
+            useOrderStore.setState({ order: null });
+            useCartStore.setState({ cartItems: [] });
           } else {
             console.error('Failed to store order data:', response.data);
           }
