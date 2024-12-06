@@ -21,6 +21,7 @@ const Shop = () => {
   const [categoryFilter, setCategoryFilter] = useState([]); // Assuming multiple categories
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const itemsPerPage = 12; // Adjust as needed
 
   // State for suggestions
@@ -143,8 +144,10 @@ const Shop = () => {
                   filter={filter}
                   categoryFilter={categoryFilter}
                   searchTerm={debouncedSearchTerm}
+                  setSearchTerm={setSearchTerm}
                   currentPage={currentPage}
                   itemsPerPage={itemsPerPage}
+                  onTotalPagesChange={setTotalPages}
                 />
               </div>
 
@@ -153,8 +156,7 @@ const Shop = () => {
                   <div className="mbp_pagination mt20">
                     <Pagination
                       currentPage={currentPage}
-                      itemsPerPage={itemsPerPage}
-                      totalItems='12'
+                      totalPages={totalPages}
                       onPageChange={handlePageChange}
                     />
                   </div>

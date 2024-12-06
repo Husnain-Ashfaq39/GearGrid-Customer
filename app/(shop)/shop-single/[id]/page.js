@@ -21,11 +21,11 @@ const ShopSingle = ({ params }) => {
       fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/products/${id}`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("Fetched product data:", data);
+         
           setProduct(data);
         })
         .catch((error) => console.error("Error fetching product:", error));
-        console.log(product);
+   
     }
   }, [id]);
 
@@ -76,7 +76,7 @@ const ShopSingle = ({ params }) => {
       <section className="shop-single-content pt0 pb40 ovh bgc-f9">
         <div className="container">
           <div className="row">
-            <SingleProDetails product={product} />
+              <SingleProDetails product= {product} />
             <div className="col-lg-12">
               <ProductContentTabs product={product} />
             </div>

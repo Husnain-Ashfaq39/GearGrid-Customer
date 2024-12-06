@@ -1,39 +1,65 @@
 "use client";
-import { useState } from "react";
+import React from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const Pagination = () => {
-  const [currentPage, setCurrentPage] = useState(2);
-  const totalPages = 3;
-  const pages = [];
-
-  const handleClick = (page) => {
-    setCurrentPage(page);
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      onPageChange(page);
+    }
   };
 
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push(
-      <li
-        role="button"
-        key={i}
-        className={`page-item ${i === currentPage ? "active" : ""}`}
-        onClick={() => handleClick(i)}
-      >
-        <span className="page-link">{i}</span>
-      </li>
-    );
-  }
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 3;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    // Adjust start page if we're near the end
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <li
+          key={i}
+          className={`page-item ${i === currentPage ? "active" : ""}`}
+          onClick={() => handlePageChange(i)}
+          role="button"
+          style={{ cursor: "pointer" }}
+        >
+          <span className="page-link">{i}</span>
+        </li>
+      );
+    }
+
+    return pages;
+  };
 
   return (
     <ul className="page_navigation">
-      <li role="button" className="page-item">
+      <li
+        className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+        onClick={() => handlePageChange(currentPage - 1)}
+        role="button"
+        style={{ cursor: currentPage === 1 ? "not-allowed" : "pointer" }}
+      >
         <span className="page-link">
-          <span className="fa fa-arrow-left" />
+          <FaChevronLeft />
         </span>
       </li>
-      {pages}
-      <li role="button" className="page-item">
+
+      {renderPageNumbers()}
+
+      <li
+        className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}
+        onClick={() => handlePageChange(currentPage + 1)}
+        role="button"
+        style={{ cursor: currentPage === totalPages ? "not-allowed" : "pointer" }}
+      >
         <span className="page-link">
-          <span className="fa fa-arrow-right" />
+          <FaChevronRight />
         </span>
       </li>
     </ul>

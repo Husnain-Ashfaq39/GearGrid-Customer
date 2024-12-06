@@ -2,6 +2,7 @@ import Link from "next/link";
 import MainMenu from "./MainMenu";
 import Image from "next/image";
 import React from "react";
+
 const DefaultHeader = () => {
   return (
     <header className="header-nav menu_style_home_one home3_style main-menu">
@@ -34,7 +35,6 @@ const DefaultHeader = () => {
           </Link>
           {/* Responsive Menu Structure*/}
           <ul
-            // id="respMenu"
             className="ace-responsive-menu text-end"
             data-menu-style="horizontal"
           >

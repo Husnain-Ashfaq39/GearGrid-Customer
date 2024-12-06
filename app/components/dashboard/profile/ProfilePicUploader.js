@@ -65,7 +65,7 @@ const ProfilePicUploader = () => {
 
   return (
     <motion.div
-      className="relative w-40 h-40 rounded-full overflow-hidden"
+      className="relative w-40 h-40 rounded-full overflow-hidden mb-6"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}

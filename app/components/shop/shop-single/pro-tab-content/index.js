@@ -1,9 +1,12 @@
 'use client';
+import { useState } from 'react';
 import CommentBox from "./CommentBox";
 import Comments from "./Comments";
 import ProductDescripitons from "./ProductDescripitons";
 
-const ProductContentTabs = ({ product}) => {
+const ProductContentTabs = ({ product }) => {
+  const [reviewsCount, setReviewsCount] = useState(0);
+
   return (
     <div className="shop_single_tab_content mt40">
       <ul
@@ -36,7 +39,7 @@ const ProductContentTabs = ({ product}) => {
             aria-controls="reviews"
             aria-selected="false"
           >
-            Reviews (2)
+            Reviews ({reviewsCount})
           </button>
         </li>
       </ul>
@@ -69,7 +72,7 @@ const ProductContentTabs = ({ product}) => {
                 <div className="product_single_content">
                   <div className="mbp_pagination_comments">
                     <h5 className="fz16 mb30">Reviews</h5>
-                    <Comments />
+                    <Comments product={product} onReviewsCountChange={setReviewsCount} />
                   </div>
                 </div>
               </div>

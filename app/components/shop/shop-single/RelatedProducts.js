@@ -4,52 +4,47 @@ import { Pagination } from "swiper";
 import "swiper/swiper-bundle.css";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import useCartStore from "@/utils/store/useCartStore";
 
-const RelatedProducts = () => {
-  const products = [
-    {
-      id: 1,
-      imageSrc: "/images/shop/1.png",
-      title: "12v Compact Battery Jump Starter",
-      rating: 4.7,
-      price: 129,
-    },
-    {
-      id: 2,
-      imageSrc: "/images/shop/2.png",
-      title: "12v Compact Battery Jump Starter",
-      rating: 4.7,
-      price: 129,
-    },
-    {
-      id: 3,
-      imageSrc: "/images/shop/3.png",
-      title: "12v Compact Battery Jump Starter",
-      rating: 4.7,
-      price: 129,
-    },
-    {
-      id: 4,
-      imageSrc: "/images/shop/4.png",
-      title: "12v Compact Battery Jump Starter",
-      rating: 4.7,
-      price: 129,
-    },
-    {
-      id: 5,
-      imageSrc: "/images/shop/5.png",
-      title: "12v Compact Battery Jump Starter",
-      rating: 4.7,
-      price: 129,
-    },
-    {
-      id: 6,
-      imageSrc: "/images/shop/6.png",
-      title: "12v Compact Battery Jump Starter",
-      rating: 4.7,
-      price: 129,
-    },
-  ];
+const RelatedProducts = ({productId}) => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const addToCart = useCartStore((state) => state.addToCart);
+
+  useEffect(() => {
+    const fetchRelatedProducts = async () => {
+      try {
+        if (!productId) return;
+
+        const response = await fetch(`http://localhost:5000/api/products/related/${productId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch related products');
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        console.error('Error fetching related products:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRelatedProducts();
+  }, [productId]);
+
+  const handleAddToCart = (e, product) => {
+    e.preventDefault(); // Prevent navigation
+    addToCart(product);
+    // Optional: Add some visual feedback
+    alert('Product added to cart!');
+  };
+
+  if (loading) return <div>Loading related products...</div>;
+  if (error) return <div>Error loading related products: {error}</div>;
+  if (!products.length) return null;
 
   return (
     <>
@@ -63,7 +58,6 @@ const RelatedProducts = () => {
           clickable: true,
         }}
         breakpoints={{
-          // breakpoints for responsive design
           320: {
             slidesPerView: 1,
           },
@@ -79,50 +73,65 @@ const RelatedProducts = () => {
         }}
       >
         {products.map((product) => (
-          <SwiperSlide key={product.id}>
-            <div className="item">
-              <div className="shop_item">
-                <Link href="/shop-single" className="thumb">
+          <SwiperSlide key={product._id}>
+            <div className="item" style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
+              <div className="shop_item" style={{ height: '450px', display: 'flex', flexDirection: 'column' }}>
+                <Link href={`/shop-single/${product._id}`} className="thumb" style={{ 
+                  width: '100%', 
+                  height: '300px', 
+                  position: 'relative',
+                  display: 'block',
+                  overflow: 'hidden'
+                }}>
                   <Image
-                    width={248}
-                    height={248}
-                    src={product.imageSrc}
-                    alt={`${product.id}.png`}
+                    fill
+                    src={product.images?.[0] || "/images/shop/1.png"}
+                    alt={product.name}
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 300px) 100vw, 300px"
                   />
                 </Link>
-                <div className="details">
-                  <div className="title">
-                    <Link href="/shop-single">{product.title}</Link>
-                  </div>
-                  <div className="review">
-                    <ul className="mb0">
-                      {/* Rating stars */}
-                      {[...Array(5)].map((_, index) => (
-                        <li className="list-inline-item" key={index}>
-                          <a href="#">
-                            <i className="fa fa-star" />
-                          </a>
-                        </li>
-                      ))}
-                      <li className="list-inline-item">{product.rating}</li>
-                    </ul>
+                <div className="details" style={{ flex: 1, padding: '15px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <div className="title" style={{ marginBottom: '10px' }}>
+                      <Link href={`/shop-single/${product._id}`}>{product.name}</Link>
+                    </div>
+                    <div className="review">
+                      <ul className="mb0">
+                        {[...Array(5)].map((_, index) => (
+                          <li className="list-inline-item" key={index}>
+                            <a href="#">
+                              <i className="fa fa-star" />
+                            </a>
+                          </li>
+                        ))}
+                        <li className="list-inline-item">4.7</li>
+                      </ul>
+                    </div>
                   </div>
 
                   <div className="si_footer">
                     <div className="price float-start">
-                      <small>
-                        <del>$129</del>
-                      </small>
-                      ${product.price}
+                      {product.discountPrice && (
+                        <small>
+                          <del>${product.price}</del>
+                        </small>
+                      )}
+                      ${product.discountPrice || product.price}
                     </div>
-                    <Link href="/shop-single" className="cart_btn float-end">
+                    <a 
+                      href="#" 
+                      onClick={(e) => handleAddToCart(e, product)} 
+                      className="cart_btn float-end"
+                      style={{ cursor: 'pointer' }}
+                    >
                       <Image
                         width={12}
                         height={14}
                         src="/images/shop/cart-bag.svg"
                         alt="cart-bag.svg"
                       />
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </div>
