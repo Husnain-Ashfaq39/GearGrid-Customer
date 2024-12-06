@@ -11,41 +11,58 @@ const CartItems = () => {
     return <div className="p-5 h4">No items available</div>;
   }
 
-  const handleQuantityChange = (id, value) => {
-    const quantity = Math.max(1, parseInt(value) || 1);
-    useCartStore.setState((state) => ({
-      cartItems: state.cartItems.map((item) =>
-        item.id === id ? { ...item, quantity } : item
-      ),
-    }));
+  const handleQuantityChange = (e, _id) => {
+    const inputQuantity = parseInt(e.target.value, 10) || 1;
+
+    const item = cartItems.find(item => item._id === _id);
+    const stockQuantity = item ? item.stockQuantity : 0;
+
+    // Ensure quantity does not exceed stock
+    if (inputQuantity > stockQuantity) {
+      alert(`Only ${stockQuantity} items are available in stock.`);
+      useCartStore.setState((state) => ({
+        cartItems: state.cartItems.map((item) =>
+          item._id === _id ? { ...item, quantity: stockQuantity } : item
+        ),
+      }));
+    } else if (inputQuantity < 1) {
+      useCartStore.setState((state) => ({
+        cartItems: state.cartItems.map((item) =>
+          item._id === _id ? { ...item, quantity: 1 } : item
+        ),
+      }));
+    } else {
+      useCartStore.setState((state) => ({
+        cartItems: state.cartItems.map((item) =>
+          item._id === _id ? { ...item, quantity: inputQuantity } : item
+        ),
+      }));
+    }
   };
 
   return (
     <>
       {cartItems.map((item) => {
-        const total = item.price * item.quantity;
+        const total = (item.price || 0) * (item.quantity || 1);
+        const imageSrc = item.images && item.images.length > 0 ? item.images[0] : "/images/placeholder.png";
 
         return (
-          <tr key={item.id}>
+          <tr key={item._id}>
             <th className="pl30" scope="row">
               <ul className="cart_list mt20">
                 <li className="list-inline-item">
-                  <Link href={`/shop-single/${item.id}`}>
+                  <Link href={`/shop-single/${item._id}`}>
                     <Image
                       width={70}
                       height={70}
                       quality={30}
-                      src={item.imageSrc}
-                      alt={`cart${item.id}.png`}
+                      src={imageSrc}
+                      alt={`Image of ${item.name}`}
                     />
                   </Link>
                 </li>
                 <li className="list-inline-item">
-                  <Link
-                    className="cart_title"
-                    href={`/shop-single/${item.id}`}
-                  >
-
+                  <Link className="cart_title" href={`/shop-single/${item._id}`}>
                     {item.name}
                   </Link>
                 </li>
@@ -58,7 +75,7 @@ const CartItems = () => {
                 type="number"
                 min="1"
                 value={item.quantity}
-                onChange={(e) => handleQuantityChange(item.id, e.target.value)}
+                onChange={(e) => handleQuantityChange(e, item._id)}
               />
             </td>
             <td>${total}</td>
@@ -66,7 +83,7 @@ const CartItems = () => {
               <div
                 className="pointer"
                 title="Delete"
-                onClick={() => removeFromCart(item.id)}
+                onClick={() => removeFromCart(item._id)}
               >
                 <span className="flaticon-trash" />
               </div>

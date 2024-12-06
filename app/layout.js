@@ -6,7 +6,8 @@ import { Inter } from "next/font/google";
 import "aos/dist/aos.css";
 import "../public/scss/main.scss";
 import ScrollToTop from "./components/common/ScrollTop";
-import styled from "styled-components";
+import styled, { StyleSheetManager } from "styled-components";
+import isPropValid from '@emotion/is-prop-valid';
 import React from "react";
 import './global.css'
 if (typeof window !== "undefined") {
@@ -31,10 +32,12 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <Body cz-shortcut-listen="false">
-        {children}
-        <ScrollToTop />
-      </Body>
+      <StyleSheetManager shouldComponentUpdate={true} shouldForwardProp={isPropValid}>
+        <Body cz-shortcut-listen="false">
+          {children}
+          <ScrollToTop />
+        </Body>
+      </StyleSheetManager>
     </html>
   );
 }

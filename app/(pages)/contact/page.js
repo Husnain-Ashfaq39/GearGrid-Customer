@@ -9,7 +9,7 @@ import Address from "@/app/components/pages/contact/Address";
 import Form from "@/app/components/pages/contact/Form";
 
 export const metadata = {
-  title: "Contact || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Gear Grid Eccomerce Vehicles Part",
 };
 
 const Contact = () => {

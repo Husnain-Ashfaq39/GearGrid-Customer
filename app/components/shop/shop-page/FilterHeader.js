@@ -1,8 +1,9 @@
-
 /* eslint-disable react/prop-types */
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
+import { FaMicrophone } from 'react-icons/fa';
+import VoiceSearch from '../../common/VoiceSearch/VoiceSearch';
 
 export default function FilterHeader({
   onFilterChange,
@@ -22,6 +23,7 @@ export default function FilterHeader({
 
   const [localSearch, setLocalSearch] = useState(searchTerm);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isVoiceSearchOpen, setIsVoiceSearchOpen] = useState(false);
   const suggestionsRef = useRef(null);
 
   useEffect(() => {
@@ -29,12 +31,14 @@ export default function FilterHeader({
   }, [searchTerm]);
 
   const handleFilterChange = (e) => {
-    onFilterChange(e.target.value);
+    const selectedFilter = e.target.value;
+    onFilterChange(selectedFilter);
   };
 
   const handleSearchInputChange = (e) => {
-    setLocalSearch(e.target.value);
-    onSearchChange(e.target.value);
+    const searchValue = e.target.value;
+    setLocalSearch(searchValue);
+    onSearchChange(searchValue);
     setShowSuggestions(true);
   };
 
@@ -81,7 +85,22 @@ export default function FilterHeader({
                 if (suggestions.length > 0) setShowSuggestions(true);
               }}
             />
-           
+            <button
+              type="button"
+              onClick={() => setIsVoiceSearchOpen(true)}
+              className="voice-btn position-absolute"
+              style={{
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: '#666'
+              }}
+            >
+              <FaMicrophone />
+            </button>
             <img className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" src='/images/icon/search.svg' alt="" />
 
             {/* Suggestions Dropdown */}
@@ -99,15 +118,15 @@ export default function FilterHeader({
                 {!isSuggestionsLoading &&
                   suggestions.map((suggestion, index) => (
                     <div className="flex items-center px-2" key={index}>
-                     <img className=" w-4 h-4" src='/images/icon/search.svg' alt="" />
-                    <li
-                      key={index}
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
-                      onClick={() => handleSuggestionClick(suggestion)}
+                      <img className=" w-4 h-4" src='/images/icon/search.svg' alt="" />
+                      <li
+                        key={index}
+                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        onClick={() => handleSuggestionClick(suggestion)}
                       >
-                      {suggestion}
-                    </li>
-                      </div>
+                        {suggestion}
+                      </li>
+                    </div>
                   ))}
               </ul>
             )}
@@ -125,12 +144,12 @@ export default function FilterHeader({
               Filters
             </button>
             <div className="relative w-full sm:w-auto">
+              {/* Filter dropdown */}
               <select
-                className="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                value={filter}
                 onChange={handleFilterChange}
-                value={filter} // Make it a controlled component
+                className="w-full sm:w-48 pl-4 pr-8 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="default">Sort by</option>
                 {options.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
@@ -141,6 +160,15 @@ export default function FilterHeader({
           </div>
         </div>
       </div>
+
+      <VoiceSearch
+        isOpen={isVoiceSearchOpen}
+        onClose={() => setIsVoiceSearchOpen(false)}
+        onSearch={(transcript) => {
+          setLocalSearch(transcript);
+          onSearchChange(transcript);
+        }}
+      />
     </div>
   );
 }
