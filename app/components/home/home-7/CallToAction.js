@@ -31,7 +31,7 @@ const CallToAction = () => {
       }
 
       // Create a new subscriber document
-      await axios.post('http://localhost:5001/subscribers/add', { email: values.email }); // Use Axios to post the new subscriber
+      await axios.post('http://5001/subscribers/add', { email: values.email }); // Use Axios to post the new subscriber
 
       setSubmissionStatus({ success: true, message: "Subscription successful!" });
       resetForm();

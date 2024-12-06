@@ -77,7 +77,7 @@ const BillingMain = () => {
       try {
         // Call your backend to create a Stripe checkout session
         console.log('ste 1');
-        const response = await fetch('http://localhost:5001/api/payment/create-checkout-session', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/payment/create-checkout-session`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -26,7 +26,7 @@ const Card = () => {
   useEffect(() => {
     const fetchTotalOrders = async () => {
       try {
-        const response = await fetch("http://localhost:5000/orders/totalOrders");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/orders/totalOrders`);
         const data = await response.json();
         setTotalOrders(data.totalOrders.toString());
         setCards(prev => prev.map((card, index) => 

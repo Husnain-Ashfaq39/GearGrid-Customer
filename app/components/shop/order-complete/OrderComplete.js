@@ -14,7 +14,7 @@ const OrderComplete = () => {
         
         try {
           // Call your backend API to store the order data
-          const response = await fetch('http://localhost:5001/orders/add', {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/orders/add`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

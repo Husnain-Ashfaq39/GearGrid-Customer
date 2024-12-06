@@ -18,7 +18,7 @@ const RelatedProducts = ({productId}) => {
       try {
         if (!productId) return;
 
-        const response = await fetch(`http://localhost:5000/api/products/related/${productId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/products/related/${productId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch related products');
         }

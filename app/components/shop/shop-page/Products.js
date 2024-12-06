@@ -27,7 +27,7 @@ const Products = ({
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://localhost:5000/api/products/all`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/products/all`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

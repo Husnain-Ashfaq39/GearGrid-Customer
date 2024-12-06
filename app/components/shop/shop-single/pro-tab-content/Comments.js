@@ -11,7 +11,7 @@ const Comments = ({ product, onReviewsCountChange }) => {
       try {
         if (!product?._id) return;
         
-        const response = await fetch(`http://localhost:5000/reviews/getReviews/${product._id}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/reviews/getReviews/${product._id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch reviews');
         }
