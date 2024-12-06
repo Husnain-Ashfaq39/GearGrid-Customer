@@ -1,6 +1,6 @@
 
 'use client'
-import Home_7 from "./(home)/page";
+import Home_7 from "./(home)/home/page";
 import Wrapper from "./layout/wrapper";
 import React from "react";
 import './global.css'

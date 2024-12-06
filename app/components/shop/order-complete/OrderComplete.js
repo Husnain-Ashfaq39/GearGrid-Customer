@@ -2,28 +2,53 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useEffect } from 'react';
 import useOrderStore from '@/utils/store/useOrderStore'; // Import the order store
-
+import useCartStore from '@/utils/store/useCartStore'; // Import the cart store
+import axios from 'axios'; // Ensure axios is imported
 const OrderComplete = () => {
   const order = useOrderStore((state) => state.order); // Get the order from the store
+  const cartItems = useCartStore((state) => state.cartItems); // Get cart items from the store
   console.log('order '+JSON.stringify(order));
   
-
   useEffect(() => {
     const storeOrderData = async () => {
       if (order) {
         
         try {
-          // Call your backend API to store the order data
-          const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/orders/add`, {
-            method: 'POST',
+          const response = await axios.post(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/orders/add`, order, {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(order),
           });
+          console.log("Response adding Order "+JSON.stringify(response));
+          
 
-          if (!response.ok) {
-            console.error('Failed to store order data:', await response.json());
+          if (response) {
+            // New code to store order items
+            await Promise.all(cartItems.map(async (item) => {
+              const orderItem = {
+                orderId: response.data._id, // Assuming transactionId is the orderId
+                productId: item._id,
+                productName: item.name, // Adjust according to your product structure
+                quantity: item.quantity,
+                price: item.price, // Adjust according to your product structure
+                subtotal: item.price * item.quantity,
+                description: item.description || '', // Adjust according to your product structure
+                categoryId: item.categoryId, // Adjust according to your product structure
+                images: item.images || [], // Adjust according to your product structure
+                tags: item.tags || [], // Adjust according to your product structure
+                isOnSale: item.isOnSale || false // Adjust according to your product structure
+              };
+              console.log('order item '+JSON.stringify(orderItem));
+              
+
+              await axios.post(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/orderitems/add`, orderItem, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+            }));
+          } else {
+            console.error('Failed to store order data:', response.data);
           }
         } catch (error) {
           console.error('Error storing order data:', error);
@@ -32,7 +57,7 @@ const OrderComplete = () => {
     };
 
     storeOrderData();
-  }, [order]); // Run effect when order changes
+  }, [order, cartItems]); // Added cartItems to the dependency array
 
   return (
     <>
@@ -81,15 +106,16 @@ const OrderComplete = () => {
                       Product <span className="float-end">Subtotal</span>
                     </p>
                   </li>
-                  {/* You can add more product details here if needed */}
-                  <li>
-                    <p className="product_name_qnt">
-                      {order?.productName || 'Product Name'} x {order?.quantity || 1} <span className="float-end">${order?.totalPrice || '0.00'}</span>
-                    </p>
-                  </li>
+                  {cartItems.map((item) => (
+                    <li key={item._id}>
+                      <p className="product_name_qnt">
+                        {item.name} x {item.quantity} <span className="float-end">${(item.price * item.quantity).toFixed(2)}</span>
+                      </p>
+                    </li>
+                  ))}
                   <li className="subtitle">
                     <p>
-                      Total <span className="float-end totals">${order?.totalPrice || '0.00'}</span>
+                      Total <span className="float-end totals">${cartItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}</span>
                     </p>
                   </li>
                 </ul>

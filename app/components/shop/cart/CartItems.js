@@ -1,11 +1,22 @@
-'use client';
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import useCartStore from "@/utils/store/useCartStore";
+/* eslint-disable react/react-in-jsx-scope */
+'use client'
+import { useEffect, useState } from "react";
+import Link from "next/link"; // Import Link
+import Image from "next/image"; // Import Image
+import useCartStore from '@/utils/store/useCartStore'; // Import cart store
 
 const CartItems = () => {
-  const { cartItems, removeFromCart, addToCart } = useCartStore();
+  const { cartItems, removeFromCart } = useCartStore();
+  const [hydrated, setHydrated] = useState(false);
+
+  // This ensures the component is only rendered after hydration on the client-side
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  if (!hydrated) {
+    return null; // or loading spinner if necessary
+  }
 
   if (cartItems.length === 0) {
     return <div className="p-5 h4">No items available</div>;

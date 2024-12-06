@@ -82,7 +82,7 @@ const BillingMain = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ totalPrice: totalAmount }),
+          body: JSON.stringify({ totalPrice: Math.round(totalAmount)}),
         });
         console.log('ste 2');
 
