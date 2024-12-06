@@ -1,15 +1,21 @@
 "use client";
 import React from "react";
 import useCartStore from "@/utils/store/useCartStore";
+import { useRouter } from "next/navigation";
 
 const CartTotal = () => {
   const { cartItems } = useCartStore();
+  const router = useRouter();
 
   const subtotal = cartItems.reduce((acc, item) => {
     return acc + item.price * item.quantity;
   }, 0);
 
   const total = subtotal;
+
+  const handleCheckout = () => {
+    router.push("/checkout");
+  };
 
   return (
     <div className="order_sidebar_widget style2">
@@ -27,7 +33,7 @@ const CartTotal = () => {
         </li>
       </ul>
       <div className="ui_kit_button payment_widget_btn">
-        <button type="button" className="btn btn-thm btn-block">
+        <button type="button" className="btn btn-thm btn-block" onClick={handleCheckout}>
           Proceed to Checkout
         </button>
       </div>

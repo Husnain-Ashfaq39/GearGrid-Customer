@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import db from "@/utils/appwrite/Services/dbServices";
 import { Query } from "appwrite";
+import axios from 'axios'; // Import Axios
 
 const CallToAction = () => {
   const [submissionStatus, setSubmissionStatus] = useState(null);
@@ -20,18 +21,18 @@ const CallToAction = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       // Check if email already exists in the subscribers collection
-      const existingEmails = await db.subscribers.list([
-        Query.equal("email", [values.email]), // Correct format for Query.equal
-      ]);
+      const existingEmails = await axios.get('http://localhost:5001/subscribers/all'); // Call the API to fetch all subscribers
+     
 
-      if (existingEmails.total > 0) {
+      if (existingEmails.some(subscriber => subscriber.email === values.email)) {
         // Email already exists
         setSubmissionStatus({ success: false, message: "This email is already subscribed." });
         return;
       }
 
       // Create a new subscriber document
-      await db.subscribers.create({ email: values.email });
+      await axios.post('http://localhost:5001/subscribers/add', { email: values.email }); // Use Axios to post the new subscriber
+
       setSubmissionStatus({ success: true, message: "Subscription successful!" });
       resetForm();
     } catch (error) {

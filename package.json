@@ -12,6 +12,7 @@
     "@faker-js/faker": "^8.0.2",
     "@hookform/resolvers": "^3.9.1",
     "@popperjs/core": "^2.11.7",
+    "@stripe/stripe-js": "^5.2.0",
     "aos": "^2.3.4",
     "appwrite": "^16.0.2",
     "axios": "^1.7.8",

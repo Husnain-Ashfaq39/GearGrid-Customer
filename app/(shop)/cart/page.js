@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import Footer from "@/app/components/common/Footer";
 import DefaultHeader from "../../components/common/DefaultHeader";
 import HeaderSidebar from "../../components/common/HeaderSidebar";

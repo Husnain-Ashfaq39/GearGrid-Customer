@@ -16,7 +16,7 @@ export default function Categories({ onCategorySelect }) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/categories/all`)
+        const response = await fetch(`http://localhost:5001/categories/all`)
         const categoriesWithImages = await response.json()
         console.log(categoriesWithImages);
 

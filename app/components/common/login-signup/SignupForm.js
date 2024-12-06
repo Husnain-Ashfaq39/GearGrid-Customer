@@ -7,10 +7,10 @@ import axios from 'axios'; // Add axios for making API requests
 const SignupForm = () => {
   // Define the validation schema using Yup
   const validationSchema = Yup.object({
-    username: Yup.string()
-      .min(3, "Username must be at least 3 characters")
-      .max(15, "Username must be 15 characters or less")
-      .required("Username is required"),
+    name: Yup.string()
+      .min(3, "name must be at least 3 characters")
+      .max(15, "name must be 15 characters or less")
+      .required("name is required"),
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
@@ -25,7 +25,7 @@ const SignupForm = () => {
   // Initialize Formik
   const formik = useFormik({
     initialValues: {
-      username: "",
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -36,7 +36,7 @@ const SignupForm = () => {
         console.log("Form Data", values);
         // Register the user using the new API
         const response = await axios.post(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/api/auth/register`, {
-          username: values.username,
+          name: values.name,
           email: values.email,
           password: values.password,
           confirmPassword: values.confirmPassword,
@@ -71,28 +71,28 @@ const SignupForm = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <div className="row">
-        {/* Username Field */}
+        {/* name Field */}
         <div className="col-lg-6">
           <div className="form-group">
-            <label htmlFor="username" className="form-label">
-              Username
+            <label htmlFor="name" className="form-label">
+              name
             </label>
             <input
-              id="username"
-              name="username"
+              id="name"
+              name="name"
               type="text"
               className={`form-control ${
-                formik.touched.username && formik.errors.username
+                formik.touched.name && formik.errors.name
                   ? "is-invalid"
                   : ""
               }`}
-              placeholder="Username"
+              placeholder="name"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.username}
+              value={formik.values.name}
             />
-            {formik.touched.username && formik.errors.username ? (
-              <div className="invalid-feedback">{formik.errors.username}</div>
+            {formik.touched.name && formik.errors.name ? (
+              <div className="invalid-feedback">{formik.errors.name}</div>
             ) : null}
           </div>
         </div>

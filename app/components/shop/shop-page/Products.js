@@ -28,7 +28,7 @@ const Products = ({ filter, categoryFilter, searchTerm, currentPage, itemsPerPag
           queryParams.append("categoryId", categoryFilter);
         }
 
-        const response = await fetch(`http://localhost:5000/api/products/all?${queryParams.toString()}`);
+        const response = await fetch(`http://localhost:5001/api/products/all?${queryParams.toString()}`);
 
         if (!response.ok) {
           const errorText = await response.text();
