@@ -17,7 +17,7 @@ import Image from "next/image";
 import React from "react";
 
 export const metadata = {
-  title: "User Profile || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "User Profile || Gear Grid Eccomerce Vehicle Parts",
 };
 
 const UserProfile = () => {
@@ -83,7 +83,7 @@ const UserProfile = () => {
                       <li className="list-inline-item">
                         <a className="mr10" href="#">
                           <span className="flaticon-email pr5 vam" />{" "}
-                          hello@voiture.com
+                          hello@GearGrid.com
                         </a>
                       </li>
                     </ul>

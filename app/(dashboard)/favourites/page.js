@@ -7,7 +7,7 @@ import LoginSignupModal from "@/app/components/common/login-signup";
 import CarItems from "@/app/components/dashboard/favourites/CarItems";
 import React from "react";
 export const metadata = {
-  title: "Favourites || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Favourites || Gear Grid Eccomerce Vehicles Part",
 };
 
 const Favourites = () => {

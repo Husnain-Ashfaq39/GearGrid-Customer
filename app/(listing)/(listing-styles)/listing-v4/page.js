@@ -13,7 +13,7 @@ import RecentlyViewed from "@/app/components/listing/sidebar/RecentlyViewed";
 import BannerWidget from "@/app/components/common/BannerWidget";
 
 export const metadata = {
-  title: "Listing V4 || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Listing V4 || Gear Grid Eccomerce Vehicle Parts",
 };
 
 const ListingV4 = () => {

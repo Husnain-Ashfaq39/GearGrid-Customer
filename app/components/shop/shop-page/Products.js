@@ -115,12 +115,12 @@ const Products = ({
                 </span>
               )}
               <Link href={`/shop-single/${product._id}`} className="block">
-                <div className="thumb">
+                <div className="thumb relative w-full pt-[100%] bg-gray-100 overflow-hidden">
                   {product.images && product.images[0] && (
                     <Image
-                      width={284}
-                      height={183}
-                      className="img-fluid w-100 h-100 object-cover"
+                      width={400}
+                      height={400}
+                      className="absolute top-0 left-0 w-full h-full object-contain"
                       src={product.images[0]}
                       alt={product.name}
                     />
@@ -132,21 +132,32 @@ const Products = ({
                   <Link href={`/shop-single/${product._id}`}>
                     <h5>{product.name}</h5>
                   </Link>
-                  <span className="price">
-                    <small>
-                      <del>{product.oldPrice && `$${product.oldPrice}`}</del>
-                    </small>
-                    ${product.price}
-                  </span>
                 </div>
-                <div className="cart_btns">
-                  <button
-                    onClick={() => addToCart(product)}
-                    className="cart_btn_1"
-                    aria-label="Add to cart"
+                <div className="si_footer">
+                  <div className="price float-start">
+                    ${product.price}
+                    {product.oldPrice && (
+                      <small>
+                        <del>${product.oldPrice}</del>
+                      </small>
+                    )}
+                  </div>
+                  <a 
+                    href="#" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      addToCart(product);
+                    }} 
+                    className="cart_btn float-end"
+                    style={{ cursor: 'pointer' }}
                   >
-                    Add to Cart
-                  </button>
+                    <Image
+                      width={12}
+                      height={14}
+                      src="/images/shop/cart-bag.svg"
+                      alt="cart-bag.svg"
+                    />
+                  </a>
                 </div>
               </div>
             </div>

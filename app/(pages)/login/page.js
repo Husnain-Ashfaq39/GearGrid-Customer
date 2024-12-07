@@ -9,7 +9,7 @@ import SocialLogin from "@/app/components/pages/login/SocialLogin";
 import Link from "next/link";
 
 export const metadata = {
-  title: "LogIn || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "LogIn || Gear Grid Eccomerce Vehicle Parts",
 };
 
 const LogIn = () => {

@@ -20,7 +20,7 @@ import ReleatedCar from "@/app/components/listing/listing-single/ReleatedCar";
 
 export const metadata = {
   title:
-    "Listing Single V4 || Voiture - Automotive & Car Dealer NextJS Template",
+    "Listing Single V4 || Gear Grid Eccomerce Vehicle Parts",
 };
 
 const ListingSingleV4 = () => {

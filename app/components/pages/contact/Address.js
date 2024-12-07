@@ -8,7 +8,7 @@ const Address = () => {
       </>
     ),
     subtitle: "+1 670 936 46 70",
-    email: "hello@voiture.com",
+    email: "hello@GearGrid.com",
     socialIcons: [
       { iconClass: "fab fa-facebook-f", link: "#" },
       { iconClass: "fab fa-twitter", link: "#" },

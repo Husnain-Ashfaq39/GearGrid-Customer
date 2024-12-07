@@ -8,7 +8,7 @@ import LoginSignupModal from "@/app/components/common/login-signup";
 import OrderComplete from "@/app/components/shop/order-complete/OrderComplete";
 
 export const metadata = {
-  title: "Complete Order || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Complete Order || Gear Grid Eccomerce Vehicle Parts",
 };
 
 const CompleteOrder = () => {

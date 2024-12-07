@@ -7,7 +7,7 @@ import LoginSignupModal from "@/app/components/common/login-signup";
 import BillingMain from "@/app/components/shop/checkout";
 
 export const metadata = {
-  title: "Checkout || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Checkout || Gear Grid Eccomerce Vehicle Parts",
 };
 
 const Checkout = () => {

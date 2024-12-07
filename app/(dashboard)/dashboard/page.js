@@ -9,7 +9,7 @@ import ChartMain from "@/app/components/dashboard/dash-board/ChartMain";
 import RecenActivity from "@/app/components/dashboard/dash-board/RecenActivity";
 import React from "react";
 export const metadata = {
-  title: "Dashboard Home || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Dashboard Home || Gear Grid Eccomerce Vehicles Part",
 };
 
 const Dashboard = () => {

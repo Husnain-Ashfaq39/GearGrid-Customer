@@ -9,7 +9,7 @@ import SidebarAdvnaceFilter from "@/app/components/listing/SidebarAdvanceFilter"
 import ListGridFilter2 from "@/app/components/listing/ListGridFilter2";
 
 export const metadata = {
-  title: "Listing V6 || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Listing V6 || Gear Grid Eccomerce Vehicle Parts",
 };
 
 const ListingV3 = () => {
