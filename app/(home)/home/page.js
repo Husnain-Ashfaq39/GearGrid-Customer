@@ -10,7 +10,6 @@ import Testimonial from "@/app/components/home/home-7/Testimonial";
 import Link from "next/link";
 import React from "react";
 
-
 const Home_7 = () => {
   return (
     <div className="wrapper ovh ">
@@ -63,38 +62,24 @@ const Home_7 = () => {
       </section>
       {/* End How It Works with filter */}
 
-      {/* Car For Rent */}
-      <section className="car-for-rent pb90 pt0">
+      {/* Categories Section */}
+      <section className="categories-section pb90 pt0">
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
-              <div className="main-title text-center text-md-start mb20-sm">
-                <h2 className="title">Find Car By Model</h2>
-              </div>
-            </div>
-            {/* End .col-6 */}
-
-            <div className="col-md-6">
-              <div className="text-center text-md-end mb30-sm">
-                <Link href="/listing-v3" className="more_listing">
-                  Show All Model{" "}
-                  <span className="icon">
-                    <span className="fas fa-plus" />
-                  </span>
-                </Link>
+            <div className="col-12">
+              <div className="main-title text-center mb50">
+                <h2 className="title">Browse Parts By Category</h2>
               </div>
             </div>
           </div>
-          {/* End .row */}
-
           <div className="row">
-            <Category />
+            <div className="col-12">
+              <Category />
+            </div>
           </div>
-          {/* End .row */}
         </div>
-        {/* End container */}
       </section>
-      {/* End Car For Rent */}
+      {/* End Categories Section */}
 
       {/* Featured Product  */}
       <section className="featured-product pt0">
@@ -137,16 +122,13 @@ const Home_7 = () => {
       <section className="testimonials_home7 pt0 my-20">
         <div className="container">
           <div className="row">
-
-              <div className="home7_testimonials_box pl0-md ">
-                <h2 className="title">Our Testimonials</h2>
-                {/* Swiper */}
-                <div className="testimonial_swiper_slider_home4_style">
-                  <Testimonial />
-                </div>
+            <div className="home7_testimonials_box pl0-md ">
+              <h2 className="title">Our Testimonials</h2>
+              {/* Swiper */}
+              <div className="testimonial_swiper_slider_home4_style">
+                <Testimonial />
               </div>
-            
-            {/* End .col-lg-8 */}
+            </div>
           </div>
           {/* End .row */}
         </div>
