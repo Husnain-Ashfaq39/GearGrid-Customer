@@ -8,6 +8,10 @@ const AccountDetails = () => {
   const session = useUserStore((state) => state.session);
   const sessionId = session ? session.id : null;
 
+  if (!user || !sessionId) {
+    return <div>User not found. Please log in again.</div>;
+  }
+
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [phone, setPhone] = useState('');
@@ -30,12 +34,13 @@ const AccountDetails = () => {
     setError('');
     setSuccess('');
 
-    const userId = user?._id;
-
-    if (!userId) {
+    // Check if user is null and handle it
+    if (!user) {
       setError('User not found. Please log in again.');
       return;
     }
+
+    const userId = user._id; // Now safe to access user._id
 
     if (!sessionId) {
       setError('Session not found. Please log in again.');
