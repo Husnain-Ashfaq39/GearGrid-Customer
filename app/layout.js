@@ -9,6 +9,7 @@ import ScrollToTop from "./components/common/ScrollTop";
 import styled, { StyleSheetManager } from "styled-components";
 import isPropValid from '@emotion/is-prop-valid';
 import React from "react";
+import { Toaster } from 'react-hot-toast';
 import './global.css'
 if (typeof window !== "undefined") {
   import("bootstrap");
@@ -32,10 +33,12 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <head />
       <StyleSheetManager shouldComponentUpdate={true} shouldForwardProp={isPropValid}>
         <Body cz-shortcut-listen="false">
           {children}
           <ScrollToTop />
+          <Toaster position="top-right" />
         </Body>
       </StyleSheetManager>
     </html>
