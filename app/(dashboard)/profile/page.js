@@ -6,8 +6,6 @@ import MobileMenu from "@/app/components/common/MobileMenu";
 import LoginSignupModal from "@/app/components/common/login-signup";
 import AccountDetails from "@/app/components/dashboard/profile/AccountDetails";
 import ChangePassword from "@/app/components/dashboard/profile/ChangePassword";
-import Gallery from "@/app/components/dashboard/profile/Gallery";
-import SocialNetwork from "@/app/components/dashboard/profile/SocialNetwork";
 import React from "react";
 
 export const metadata = {
@@ -94,54 +92,8 @@ const Profile = () => {
                 </div>
                 {/* End .col */}
 
-                <div className="col-lg-12">
-                  <div className="new_property_form">
-                    <div className="row">
-                      <div className="col-lg-7">
-                        <div className="row">
-                          <div className="col-lg-12">
-                            <h4 className="title mb30">Your Social Networks</h4>
-                          </div>
-                          <SocialNetwork />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* End .col */}
-
-                <div className="col-lg-12">
-                  <div className="new_property_form">
-                    <div className="row">
-                      <div className="col-lg-12">
-                        <h4 className="title mb30">Gallery</h4>
-                      </div>
-                      {/* End .col-12 */}
-
-                      <div className="col-lg-12">
-                        <label className="form-label">Featured Image</label>
-                        <Gallery />
-                      </div>
-                      {/* End .col-12 */}
-
-                      <div className="col-md-12">
-                        <div className="mb20">
-                          <label className="form-label">
-                            Video - copy any online video link e.g. YouTube,
-                            Facebook, Instagram or .mp4
-                          </label>
-                          <input
-                            name="form_name"
-                            className="form-control form_control"
-                            type="text"
-                            placeholder="Video Link"
-                          />
-                        </div>
-                      </div>
-                      {/* End .col-12 */}
-                    </div>
-                  </div>
-                </div>
+                
+               
                 {/* End */}
               </div>
               {/* End .row */}

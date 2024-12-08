@@ -4,8 +4,14 @@ import useUserStore from "@/utils/store/userStore";
 
 const ChangePassword = () => {
   const user = useUserStore((state) => state.user);
-  const session = useUserStore((state) => state.session.id);
-  console.log('user ' + JSON.stringify(user));
+  const session = useUserStore((state) => state.session?.id);
+  
+  if (!user || !session) {
+    return <div>User not found. Please log in again.</div>;
+  }
+
+  const userId = user._id;
+
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -16,13 +22,6 @@ const ChangePassword = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
-    const userId = user?._id;
-
-    if (!userId) {
-      setError('User not found. Please log in again.');
-      return;
-    }
 
     const baseUrl = process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT;
     console.log("Session" + JSON.stringify(session))
