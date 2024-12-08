@@ -7,7 +7,7 @@ import LoginSignupModal from "@/app/components/common/login-signup";
 import Link from "next/link";
 
 export const metadata = {
-  title: "404 || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "404 || Gear Grid Eccomerce Vehicle Parts",
 };
 
 const NotFound = () => {

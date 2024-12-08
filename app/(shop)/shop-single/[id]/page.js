@@ -51,7 +51,7 @@ const ShopSingle = ({ params }) => {
       <MobileMenu />
 
       {/* Inner Page Breadcrumb */}
-      <section className="inner_page_breadcrumb style2 bgc-f9">
+      <section className="inner_page_breadcrumb style2 bgc-f9" style={{ padding: '30px 0' }}>
         <div className="container">
           <div className="row">
             <div className="col-xl-12">

@@ -1,20 +1,18 @@
 /* eslint-disable react/react-in-jsx-scope */
+'use client';
 import Footer from "@/app/components/common/Footer";
 import DefaultHeader from "../../components/common/DefaultHeader";
 import HeaderSidebar from "../../components/common/HeaderSidebar";
 import MobileMenu from "../../components/common/MobileMenu";
 import LoginSignupModal from "@/app/components/common/login-signup";
 import CartItems from "@/app/components/shop/cart/CartItems";
-import Coupon from "@/app/components/shop/cart/Coupon";
 import CartTotal from "@/app/components/shop/cart/CartTotal";
-
-export const metadata = {
-  title: "Cart || Voiture - Automotive & Car Dealer  ",
-};
+import { Toaster } from 'react-hot-toast';
 
 const Cart = () => {
   return (
     <div className="wrapper">
+      <Toaster position="top-center" />
       <div
         className="offcanvas offcanvas-end"
         tabIndex="-1"
@@ -24,7 +22,6 @@ const Cart = () => {
         <HeaderSidebar />
       </div>
       {/* Sidebar Panel End */}
-
 
       {/* Main Header Nav */}
       <DefaultHeader />
@@ -88,17 +85,6 @@ const Cart = () => {
                     </div>
                   </div>
                   {/* End .shopping_cart_table */}
-
-                  <div className="shopping_cart_tabs">
-                    <div className="shopping_cart_table">
-                      <div className="checkout_form mt30">
-                        <div className="checkout_coupon">
-                          <Coupon />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* End .shopping_cart_coupon*/}
                 </div>
                 {/* End .col-lg-8 */}
 
@@ -134,7 +120,6 @@ const Cart = () => {
       </div>
       {/* End Modal */}
     </div>
-    // End wrapper
   );
 };
 

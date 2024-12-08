@@ -1,7 +1,12 @@
 'use client'
 import React, { useState, useEffect } from "react";
+import useWishlistStore from "@/utils/store/useWishlistStore";
+import useUserStore from "@/utils/store/userStore";
+
 const Card = () => {
   const [totalOrders, setTotalOrders] = useState("0");
+  const { wishlist } = useWishlistStore();
+  const { user } = useUserStore();
   const [cards, setCards] = useState([
     {
       icon: "flaticon-list",
@@ -10,14 +15,8 @@ const Card = () => {
       className: "ff_one",
     },
     {
-      icon: "flaticon-message",
-      timer: "74",
-      para: "Messages",
-      className: "ff_one style2",
-    },
-    {
       icon: "flaticon-heart",
-      timer: "20",
+      timer: "0",
       para: "Favorites",
       className: "ff_one style3",
     },
@@ -25,8 +24,10 @@ const Card = () => {
 
   useEffect(() => {
     const fetchTotalOrders = async () => {
+      if (!user) return;
+      
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/orders/totalOrders`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/orders/user/${user._id}/total`);
         const data = await response.json();
         setTotalOrders(data.totalOrders.toString());
         setCards(prev => prev.map((card, index) => 
@@ -38,7 +39,13 @@ const Card = () => {
     };
 
     fetchTotalOrders();
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    setCards(prev => prev.map((card, index) => 
+      index === 1 ? { ...card, timer: wishlist.length.toString() } : card
+    ));
+  }, [wishlist]);
 
   return (
     <>

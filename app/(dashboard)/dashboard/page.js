@@ -9,7 +9,7 @@ import ChartMain from "@/app/components/dashboard/dash-board/ChartMain";
 import RecenActivity from "@/app/components/dashboard/dash-board/RecenActivity";
 import React from "react";
 export const metadata = {
-  title: "Dashboard Home || Voiture - Automotive & Car Dealer NextJS Template",
+  title: "Dashboard Home || Gear Grid Eccomerce Vehicles Part",
 };
 
 const Dashboard = () => {
@@ -58,16 +58,6 @@ const Dashboard = () => {
               <div className="dashboard_navigationbar dn db-lg mt50">
                 <DashboardSidebarMobileMenu />
               </div>
-
-              <div className="row">
-                <div className="col-xl-8">
-                  <div className="breadcrumb_content mb50">
-                    <h2 className="breadcrumb_title">Hello,Arman!</h2>
-                    <p>Ready to jump back in!</p>
-                  </div>
-                </div>
-              </div>
-              {/* End .row */}
 
               <div className="row">
                 <Card />

@@ -1,0 +1,21 @@
+header.header-nav.menu_style_home_one.dashbord_style {
+  border-bottom: 1px solid #eaeaea;
+  height: auto;
+  position: fixed;
+  top: 0 !important; // Changed from 40px to 0
+  width: 100%;
+  z-index: 9;
+  background-color: #fff;
+}
+
+.header_top.dashbord_style {
+  background-color: #fff;
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  width: 100%;
+}
+
+.our-dashbord.dashbord {
+  padding-top: 80px; // Added to account for fixed header
+}

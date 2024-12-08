@@ -23,11 +23,6 @@ const DashboardSidebarMenu = () => {
             path: "/favourites",
         },
         {
-            icon: "flaticon-message",
-            label: "Messages",
-            path: "/messages",
-        },
-        {
             icon: "flaticon-logout",
             label: "Logout",
             path: "/login",

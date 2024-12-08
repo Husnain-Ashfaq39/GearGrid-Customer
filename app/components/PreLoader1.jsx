@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Car } from 'lucide-react';
 
-export default function Component() {
+export default function PreLoader1() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
@@ -12,10 +12,10 @@ export default function Component() {
           clearInterval(timer);
           return 100;
         }
-        const newProgress = oldProgress + 1;
+        const newProgress = oldProgress + 3;
         return Math.min(newProgress, 100);
       });
-    }, 50);
+    }, 100);
 
     return () => clearInterval(timer);
   }, []);
@@ -54,7 +54,7 @@ export default function Component() {
             transition={{ delay: 0.2, duration: 0.5 }}
           >
             <motion.div
-              className="h-full bg-gradient-to-r from-[#f0c14b] to-[#f59e0b]"
+              className="h-full bg-blue-500"
               variants={progressVariants}
               initial="initial"
               animate="animate"
@@ -69,7 +69,7 @@ export default function Component() {
               animate="animate"
               transition={{ delay: 0.3, duration: 0.5 }}
             >
-              Loading your perfect holiday home
+              Loading GearGrid...
             </motion.span>
             <motion.span
               className="text-sm font-bold"
@@ -87,12 +87,12 @@ export default function Component() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
-            <Car className="text-[#f0c14b] w-6 h-6" />
+            <Car className="text-blue-500 w-6 h-6" />
             <div className="flex space-x-1">
               {[...Array(3)].map((_, i) => (
                 <motion.div
                   key={i}
-                  className="w-2 h-2 bg-[#f0c14b] rounded-full"
+                  className="w-2 h-2 bg-blue-500 rounded-full"
                   animate={{
                     scale: [1, 1.5, 1],
                     opacity: [0.7, 1, 0.7],

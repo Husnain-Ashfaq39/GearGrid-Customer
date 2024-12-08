@@ -12,7 +12,7 @@ import React from "react";
 
 export const metadata = {
   title:
-    "Dashboard Profile || Voiture - Automotive & Car Dealer NextJS Template",
+    "Dashboard Profile || Gear Grid Eccomerce Vehicles Part",
 };
 
 const Profile = () => {

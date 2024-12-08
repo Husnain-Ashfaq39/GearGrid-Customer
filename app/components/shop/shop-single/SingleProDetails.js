@@ -1,54 +1,82 @@
 'use client';
 import Image from "next/image";
-import React, { useState } from "react";
-import useCartStore from "@/utils/store/useCartStore"; // Import Zustand store
-import { add } from "date-fns";
+import React, { useState, useEffect } from "react";
+import useCartStore from "@/utils/store/useCartStore"; 
+import useWishlistStore from "@/utils/store/useWishlistStore";
+import { toast } from 'react-hot-toast';
+import { motion } from "framer-motion";
 
 const SingleProDetails = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useCartStore(); // Get addToCart function from Zustand
+  const { addToCart } = useCartStore(); 
+  const { addToWishlist, removeFromWishlist, wishlist } = useWishlistStore();
+  const [isInWishlist, setIsInWishlist] = useState(false);
 
-  const handleQuantityChange = (e, _id) => {
-    const inputQuantity = parseInt(e.target.value, 10) || 1;
-  
-    const item = cartItems.find(item => item._id === _id);
-    const stockQuantity = item ? item.stockQuantity : 0;
-  
-    // Ensure quantity does not exceed stock
-    if (inputQuantity > stockQuantity) {
-      alert(`Only ${stockQuantity} items are available in stock.`);
-      useCartStore.setState((state) => ({
-        cartItems: state.cartItems.map((item) =>
-          item._id === _id ? { ...item, quantity: stockQuantity } : item
-        ),
-      }));
-    } else if (inputQuantity < 1) {
-      useCartStore.setState((state) => ({
-        cartItems: state.cartItems.map((item) =>
-          item._id === _id ? { ...item, quantity: 1 } : item
-        ),
-      }));
-    } else {
-      useCartStore.setState((state) => ({
-        cartItems: state.cartItems.map((item) =>
-          item._id === _id ? { ...item, quantity: inputQuantity } : item
-        ),
-      }));
+  useEffect(() => {
+    if (product && wishlist) {
+      setIsInWishlist(wishlist.some(item => item.id === product.id));
+    }
+  }, [product, wishlist]);
+
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value > 0) {
+      setQuantity(value);
     }
   };
-  
 
   const handleAddToCart = () => {
-    if (quantity > product?.stockQuantity) {
-      alert(`Only ${product.stockQuantity} items are available in stock.`);
-    } else {
-      // const productToAdd = { ...product, quantity }; // Include quantity directly
-     addToCart(product); // Pass the product directly
-     console.log(product);
-      alert(`${product?.name} added to cart!`);
+    if (product) {
+      addToCart({
+        ...product,
+        quantity,
+      });
+      toast.custom((t) => (
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          className="bg-gradient-to-r from-blue-500 to-white p-4 rounded-lg shadow-lg flex items-center gap-3"
+        >
+          <div className="text-white">Added to cart successfully!</div>
+        </motion.div>
+      ));
     }
   };
-  
+
+  const handleWishlist = async () => {
+    if (!product) return;
+
+    let success;
+    if (isInWishlist) {
+      success = await removeFromWishlist(product.id);
+      if (success) {
+        setIsInWishlist(false);
+        showToast('Removed from wishlist');
+      }
+    } else {
+      console.log('step 1 of adding to wishlist '+ JSON.stringify(product._id));
+      
+      success = await addToWishlist(product._id);
+      if (success) {
+        setIsInWishlist(true);
+        showToast('Added to wishlist');
+      }
+    }
+  };
+
+  const showToast = (message) => {
+    toast.custom((t) => (
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 50 }}
+        className="bg-gradient-to-r from-blue-500 to-white p-4 rounded-lg shadow-lg flex items-center gap-3"
+      >
+        <div className="text-white">{message}</div>
+      </motion.div>
+    ));
+  };
 
   return (
     <>
@@ -105,15 +133,15 @@ const SingleProDetails = ({ product }) => {
               {product?.stockQuantity || 0} in stock
             </li>
           </ul>
-          <ul className="cart_btns wishlist_compare mb20">
-            <li className="list-inline-item">
+          <ul className="cart_btns wishlist_compare mb20" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <li className="list-inline-item" style={{ width: '200px' }}>
               <button
                 type="button"
-                className="btn btn-thm"
+                className="btn btn-thm w-100"
+                style={{ height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
                 onClick={()=>handleAddToCart()} // Add to cart functionality
               >
                 <img
-                  className="mr10"
                   src="/images/shop/cart-bag.svg"
                   alt="cart-bag.svg"
                 />
@@ -121,9 +149,31 @@ const SingleProDetails = ({ product }) => {
               </button>
             </li>
             <li className="list-inline-item">
-              <a href="#" className="favorite_icon">
-                <span className="flaticon-heart" />
-              </a>
+              <button
+                onClick={handleWishlist}
+                className="favorite_icon btn"
+                style={{
+                  width: '50px',
+                  height: '50px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: isInWishlist ? '#1a3760' : '#fff',
+                  border: isInWishlist ? 'none' : '1px solid #1a3760',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                <i 
+                  className="flaticon-heart"
+                  style={{ 
+                    color: isInWishlist ? '#fff' : '#1a3760',
+                    fontSize: '20px',
+                    transition: 'all 0.3s ease'
+                  }}
+                />
+              </button>
             </li>
           </ul>
           <ul className="sspd_sku">
