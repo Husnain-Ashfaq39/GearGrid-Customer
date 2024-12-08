@@ -3,11 +3,11 @@ import Link from "next/link";
 const Navigation = () => {
     const links = [
         { label: "Home", path: "/" },
-        { label: "Explore", path: "/explore" },
+        { label: "Profile", path: "/profile" },
         { label: "Listings", path: "/listings" },
         { label: "Blog", path: "/blog" },
         { label: "Shop", path: "/shop" },
-        { label: "Pages", path: "/pages" },
+        { label: "Dashboard", path: "/dashboard" },
     ];
 
     return (

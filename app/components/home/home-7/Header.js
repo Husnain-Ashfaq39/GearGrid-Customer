@@ -61,6 +61,8 @@ const Header = () => {
     return <div>{error}</div>;
   }
 
+  const defaultImage = "/images/default-profile-picture.jpg";
+
   return (
     <header className="header-nav menu_style_home_one home7_style transparent main-menu">
       {/* Ace Responsive Menu */}
@@ -130,12 +132,18 @@ const Header = () => {
             {/* User Info Section */}
             {user ? (
               <>
-                <li className="flex items-center space-x-2">
+                <li className="flex items-center space-x-3">
                   <span className="text-gray-700 text-xl">
                     Hello, {user?.name?.charAt(0).toUpperCase() + user?.name?.slice(1)}
                   </span>
-
-                  <img src="/images/icon/logout.svg" alt="logout" className="h-6 w-6 cursor-pointer" onClick={handleLogout} />
+                  <Link href="/profile">
+                    <img 
+                      src={user?.profilePictureUrl || defaultImage} 
+                      alt="Profile" 
+                      className="h-10 w-10 rounded-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                    />
+                  </Link>
+                  {/* <img src="/images/icon/logout.svg" alt="logout" className="h-6 w-6 cursor-pointer" onClick={handleLogout} /> */}
                 </li>
               </>
 

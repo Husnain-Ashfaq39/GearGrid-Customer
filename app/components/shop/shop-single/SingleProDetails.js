@@ -180,10 +180,7 @@ const SingleProDetails = ({ product }) => {
             <li>
               <a href="#">SKU:</a> <span>{product?.barcode || "N/A"}</span>
             </li>
-            <li>
-              <a href="#">Categories:</a>{" "}
-              <span>{product?.categoryId || "Uncategorized"}</span>
-            </li>
+           
             <li>
               <a href="#">Tags:</a>{" "}
               <span>{product?.tags?.join(", ") || "No tags available"}</span>

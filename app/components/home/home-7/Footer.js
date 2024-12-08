@@ -19,7 +19,7 @@ const Footer = () => {
                   src="/images/header-logo2.svg"
                   alt="header-logo.png"
                 /> */}
-               Show Logo Here
+              
               </div>
             </div>
           </div>

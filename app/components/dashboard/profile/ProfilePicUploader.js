@@ -7,10 +7,10 @@ import useUserStore from "@/utils/store/userStore";
 
 const ProfilePicUploader = () => {
   const user = useUserStore((state) => state.user);
-  console.log(user);
+  console.log('user ' + JSON.stringify(user));
   
   const session = useUserStore((state) => state.session.id);
-  const defaultImage = "/images/team/upload_photo.png";
+  const defaultImage = "/images/blog/unknown.webp";
   const [selectedImage, setSelectedImage] = useState(user.profilePictureUrl || defaultImage);
   const [file, setFile] = useState(null);
   const [isUploading, setIsUploading] = useState(false);

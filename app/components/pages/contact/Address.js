@@ -3,8 +3,8 @@ const Address = () => {
     title: "Contact Details",
     address: (
       <>
-        Germany — <br /> 329 Queensberry Street,
-        <br /> North Melbourne VIC 3051
+        Pakistan — <br /> 329 Islamabad Street,
+        <br /> F11-Street 8 Pakistan
       </>
     ),
     subtitle: "+1 670 936 46 70",

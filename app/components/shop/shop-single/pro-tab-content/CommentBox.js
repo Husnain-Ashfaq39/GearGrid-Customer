@@ -1,28 +1,74 @@
 "use client";
 import React, { useState } from "react";
+import useUserStore from "@/utils/store/userStore";
 
-const CommentBox = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+const CommentBox = ({ product }) => {
+  const user = useUserStore((state) => state.user);
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState("");
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleStarClick = (selectedRating) => {
+    setRating(selectedRating);
+  };
+
+  const handleStarHover = (hoveredValue) => {
+    setHoveredRating(hoveredValue);
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError("");
 
-    // Check if required fields are filled
-    if (!name || !email || !message) {
-      // Handle validation error
-      alert("Please fill in all required fields.");
+    if (rating === 0) {
+      setError("Please select a rating");
       return;
     }
 
-    // Perform any additional logic or submit form data
-    // For example, you can send the form data to an API endpoint
+    try {
+      setIsSubmitting(true);
 
-    // Clear form fields
-    setName("");
-    setEmail("");
-    setMessage("");
+      const reviewData = {
+        userId: user._id,
+        productId: product._id,
+        rating: rating,
+        review: review.trim()
+      };
+
+      console.log('Submitting review:', reviewData);
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APPWRITE_LOCALHOST_ENDPOINT}/reviews/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reviewData)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to submit review');
+      }
+
+      const data = await response.json();
+      console.log('Review submitted successfully:', data);
+
+      // Clear form
+      setRating(0);
+      setReview("");
+      setError("");
+
+      // Show success message
+      alert("Review submitted successfully!");
+
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      setError(error.message || 'Failed to submit review');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -31,70 +77,57 @@ const CommentBox = () => {
         <div className="col-lg-12">
           <h5 className="fz16 mb30">Write a review</h5>
           <div className="sspd_review mb30">
-            <ul>
-              {[...Array(5)].map((_, index) => (
-                <li className="list-inline-item" key={index}>
-                  <a href="#">
-                    <i className="fa fa-star" />
-                  </a>
+            <ul className="mb-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <li className="list-inline-item" key={star}>
+                  <button
+                    type="button"
+                    onClick={() => handleStarClick(star)}
+                    onMouseEnter={() => handleStarHover(star)}
+                    onMouseLeave={() => handleStarHover(0)}
+                    className="border-0 bg-transparent p-0"
+                  >
+                    <i 
+                      className={`fa fa-star ${
+                        star <= (hoveredRating || rating) ? 'text-warning' : 'text-muted'
+                      }`} 
+                    />
+                  </button>
                 </li>
               ))}
             </ul>
+            {rating > 0 && (
+              <small className="text-muted">Selected rating: {rating} stars</small>
+            )}
           </div>
         </div>
-        {/* End .col-12 */}
 
-        <div className="col-md-6">
-          <div className="mb-3">
-            <input
-              type="text"
-              className="form-control form_control"
-              placeholder="Your Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="mb-3">
-            <input
-              type="email"
-              className="form-control form_control"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-        </div>
         <div className="col-md-12">
           <div className="mb-3">
             <textarea
               className="form-control form_control"
               rows={6}
-              placeholder="Message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Write your review here..."
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
               required
             />
           </div>
         </div>
-        <div className="col-md-12">
-          <div className="form-check mb-3">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              defaultValue
-              id="defaultCheck1"
-            />
-            <label className="form-check-label" htmlFor="defaultCheck1">
-              Save my name, email, and website in this browser for the next time
-              I comment.
-            </label>
+
+        {error && (
+          <div className="col-md-12">
+            <div className="alert alert-danger">{error}</div>
           </div>
-          <button type="submit" className="btn btn-thm">
-            Send Your Review
+        )}
+
+        <div className="col-md-12">
+          <button 
+            type="submit" 
+            className="btn btn-thm" 
+            disabled={isSubmitting || rating === 0}
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit Review'}
           </button>
         </div>
       </div>
