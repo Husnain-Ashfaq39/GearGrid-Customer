@@ -13,51 +13,21 @@ import {
     SubMenu,
 } from "react-pro-sidebar";
 
-
 const MobileMenu = () => {
     const path = usePathname();
 
     const socialLinks = [
-        {
-            name: "Facebook",
-            icon: "fab fa-facebook-f",
-            link: "#",
-        },
-        {
-            name: "Twitter",
-            icon: "fab fa-twitter",
-            link: "#",
-        },
-        {
-            name: "Instagram",
-            icon: "fab fa-instagram",
-            link: "#",
-        },
-        {
-            name: "YouTube",
-            icon: "fab fa-youtube",
-            link: "#",
-        },
-        {
-            name: "Pinterest",
-            icon: "fab fa-pinterest",
-            link: "#",
-        },
+        { name: "Facebook", icon: "fab fa-facebook-f", link: "#" },
+        { name: "Twitter", icon: "fab fa-twitter", link: "#" },
+        { name: "Instagram", icon: "fab fa-instagram", link: "#" },
+        { name: "YouTube", icon: "fab fa-youtube", link: "#" },
+        { name: "Pinterest", icon: "fab fa-pinterest", link: "#" },
     ];
 
     const contactInfo = [
-        {
-            icon: "flaticon-map",
-            text: "47 Bakery Street, London, UK",
-        },
-        {
-            icon: "flaticon-phone-call",
-            text: "1-800-458-56987",
-        },
-        {
-            icon: "flaticon-clock",
-            text: "Mon - Fri 8:00 - 18:00",
-        },
+        { icon: "flaticon-map", text: "47 Bakery Street, London, UK" },
+        { icon: "flaticon-phone-call", text: "1-800-458-56987" },
+        { icon: "flaticon-clock", text: "Mon - Fri 8:00 - 18:00" },
     ];
 
     return (
@@ -76,8 +46,6 @@ const MobileMenu = () => {
                                 <span />
                             </a>
                         </div>
-                        {/* End mobile_menu_bar */}
-
                         <div className="mobile_menu_main_logo">
                             <Image
                                 width={140}
@@ -87,14 +55,10 @@ const MobileMenu = () => {
                                 alt="brand"
                             />
                         </div>
-                        {/* End .mobile_menu_main_logo */}
                     </div>
                 </div>
-                {/* /.mobile-menu */}
             </div>
-            {/* End mobile menu header */}
 
-            {/* start mobile sidebar menu */}
             <div
                 className="offcanvas offcanvas-end mobile_menu-canvas"
                 tabIndex="-1"
@@ -121,9 +85,7 @@ const MobileMenu = () => {
                             <i className="fa-light fa-circle-xmark"></i>
                         </div>
                     </div>
-                    {/* End pro-header */}
 
-                    {/* mobile menu items start */}
                     <ProSidebarProvider>
                         <Sidebar
                             width="100%"
@@ -132,92 +94,56 @@ const MobileMenu = () => {
                         >
                             <Menu>
                                 {menuItems.map((item, index) => (
-                                    <SubMenu
-                                        key={index}
-                                        className={
-                                            isParentActive(item.subMenu, path)
-                                                ? "active"
-                                                : ""
-                                        }
-                                        label={item.label}
-                                    >
-                                        {item?.subMenu?.map((subItem, subIndex) =>
-                                            subItem.subMenu ? (
-                                                <SubMenu
-                                                    key={subIndex}
-                                                    label={subItem.label}
-                                                    className={
-                                                        isParentActive(
-                                                            subItem.subMenu,
-                                                            path
-                                                        )
-                                                            ? "active"
-                                                            : ""
-                                                    }
-                                                >
-                                                    {subItem.subMenu.map(
-                                                        (
-                                                            nestedItem,
-                                                            nestedIndex
-                                                        ) => (
-                                                            <MenuItem
-                                                                key={
-                                                                    nestedIndex
-                                                                }
-                                                                component={
-                                                                    <Link
-                                                                        className={
-                                                                            nestedItem.path ==
-                                                                            path
-                                                                                ? "active"
-                                                                                : ""
-                                                                        }
-                                                                        href={
-                                                                            nestedItem.path
-                                                                        }
-                                                                    />
-                                                                }
-                                                            >
-                                                                {
-                                                                    nestedItem.label
-                                                                }
-                                                            </MenuItem>
-                                                        )
-                                                    )}
-                                                </SubMenu>
-                                            ) : (
-                                                <MenuItem
-                                                    key={subIndex}
-                                                    component={
-                                                        <Link
-                                                            className={
-                                                                subItem.path ==
-                                                                path
-                                                                    ? "active"
-                                                                    : ""
-                                                            }
-                                                            href={subItem.path}
-                                                        />
-                                                    }
-                                                >
-                                                    {subItem.label}
+                                    item.subMenu ? (
+                                        <SubMenu
+                                            key={index}
+                                            label={item.label}
+                                            className={
+                                                isParentActive(item.subMenu, path)
+                                                    ? "active"
+                                                    : ""
+                                            }
+                                        >
+                                            {item.subMenu.map((subItem, subIndex) => (
+                                                <MenuItem key={subIndex}>
+                                                    <Link
+                                                        href={subItem.path}
+                                                        className={
+                                                            subItem.path === path
+                                                                ? "active"
+                                                                : ""
+                                                        }
+                                                    >
+                                                        {subItem.label}
+                                                    </Link>
                                                 </MenuItem>
-                                            )
-                                        )}
-                                    </SubMenu>
+                                            ))}
+                                        </SubMenu>
+                                    ) : (
+                                        <MenuItem key={index}>
+                                            <Link
+                                                href={item.path}
+                                                className={
+                                                    item.path === path
+                                                        ? "active"
+                                                        : ""
+                                                }
+                                            >
+                                                {item.label}
+                                            </Link>
+                                        </MenuItem>
+                                    )
                                 ))}
                             </Menu>
                         </Sidebar>
                     </ProSidebarProvider>
-                    {/* mobile menu items end */}
 
                     <div className="pro-footer mm-add-listing">
                         <div className="border-none">
                             <div className="mmenu-contact-info">
                                 {contactInfo.map((info, index) => (
                                     <span className="phone-num" key={index}>
-                                        <i className={info.icon} />{" "}
-                                        <a href="#">{info.text}</a>
+                                        <i className={info.icon} /> {info.text}
                                     </span>
                                 ))}
                             </div>
@@ -231,11 +157,8 @@ const MobileMenu = () => {
                             </div>
                         </div>
                     </div>
-                    {/* End mm-add-listng */}
                 </div>
-                {/* End offcanvas-body */}
             </div>
-            {/* End mobile sidebar menu */}
         </>
     );
 };
